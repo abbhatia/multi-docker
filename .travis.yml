@@ -13,14 +13,9 @@ after_success:
     - docker build -t abhibhat97/multi-nginx ./nginx
     - docker build -t abhibhat97/multi-server ./server
     - docker build -t abhibhat97/multi-worker ./worker
-  deploy:
-  provider: elasticbeanstalk
-  region: "us-east-1"
-  app: "test-docker"
-  env: "TestDocker-env"
-  bucket_name: "elasticbeanstalk-us-east-1-730058774163"
-  bucket_path: "test-docker"
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push abhibhat97/multi-client
+    - docker push abhibhat97/multi-nginx
+    - docker push abhibhat97/multi-server
+    - docker push abhibhat97/multi-worker
+    
